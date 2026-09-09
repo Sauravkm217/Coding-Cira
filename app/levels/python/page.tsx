@@ -5,17 +5,15 @@ import Link from 'next/link';
 import { useGamification } from '@/components/GamificationContext';
 import Confetti from '@/components/Confetti';
 
-export default function CLevelPage() {
+export default function PythonLevelPage() {
   const { updateProgress, playSound } = useGamification();
-  const [currentStep, setCurrentStep] = useState(0); 
-  // 0: Intro, 1: Challenge 1 (printf), 2: Challenge 2 (int), 3: Challenge 3 (if), 4: Victory
-  
-  // Challenge inputs
+  const [currentStep, setCurrentStep] = useState(0);
+  // 0: Intro, 1: Challenge 1 (print), 2: Challenge 2 (for loop), 3: Challenge 3 (def function), 4: Victory
+
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
 
-  // Terminal simulated output state
   const [terminalOutput, setTerminalOutput] = useState<string | null>(null);
   const [isCompiling, setIsCompiling] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -28,19 +26,19 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input1.trim().toLowerCase() === 'printf') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nHello World!\n\n[Process exited 0 - SUCCESS]");
+      if (input1.trim().toLowerCase() === 'print') {
+        setTerminalOutput("$ python3 script.py\nHello Python World! 🐍\n\n[Finished in 0.04s]");
         playSound('success');
         setTimeout(() => {
           setCurrentStep(2);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: In function 'main':\nerror: undefined function name. Did you mean 'printf'?");
-        setErrorMsg("Hint: The function to print formatted text in C is 'printf'.");
+        setTerminalOutput("$ python3 script.py\nNameError: name '" + input1 + "' is not defined.");
+        setErrorMsg("Hint: Python uses the simple 'print' command to show output.");
         playSound('error');
       }
-    }, 600);
+    }, 500);
   };
 
   const runChallenge2 = () => {
@@ -51,19 +49,19 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input2.trim().toLowerCase() === 'int') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nPlayer Score: 100\nCoins Collected: 50\n\n[Process exited 0 - SUCCESS]");
+      if (input2.trim().toLowerCase() === 'for') {
+        setTerminalOutput("$ python3 script.py\nCasting Sparkle ✨\nCasting Lightning ⚡\nCasting Shield 🛡️\n\n[All spells cast successfully!]");
         playSound('success');
         setTimeout(() => {
           setCurrentStep(3);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: error: unknown type name. Expected whole integer type 'int'.");
-        setErrorMsg("Hint: In C, whole numbers use the 'int' data type.");
+        setTerminalOutput("$ python3 script.py\nSyntaxError: invalid syntax. Loop keyword expected.");
+        setErrorMsg("Hint: Python uses the 'for' keyword to iterate through items in a list.");
         playSound('error');
       }
-    }, 600);
+    }, 500);
   };
 
   const runChallenge3 = () => {
@@ -74,20 +72,20 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input3.trim().toLowerCase() === 'if') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nChecking score...\n🎉 High score achieved!\n\n[Process exited 0 - SUCCESS]");
+      if (input3.trim().toLowerCase() === 'def') {
+        setTerminalOutput("$ python3 script.py\n🔮 Magic potion brewed with 100 Power!\n\n[Finished in 0.03s]");
         playSound('fanfare');
-        updateProgress('c', 3, 3, 30);
+        updateProgress('python', 3, 3, 30);
         setTimeout(() => {
           setCurrentStep(4);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: error: syntax error before '(' token. Did you mean 'if'?");
-        setErrorMsg("Hint: Use the 'if' keyword to test whether a condition is true!");
+        setTerminalOutput("$ python3 script.py\nSyntaxError: invalid syntax. Expected keyword to define function.");
+        setErrorMsg("Hint: Functions in Python are defined with the 3-letter keyword 'def'.");
         playSound('error');
       }
-    }, 600);
+    }, 500);
   };
 
   const progressPercent = Math.round((currentStep / 4) * 100);
@@ -104,7 +102,7 @@ export default function CLevelPage() {
         <div style={styles.progressBar}>
           <div style={{ ...styles.progressFill, width: `${progressPercent}%` }} />
         </div>
-        <span style={{ fontWeight: 800, color: 'var(--primary)', minWidth: '45px', textAlign: 'right' }}>
+        <span style={{ fontWeight: 800, color: 'var(--warning)', minWidth: '45px', textAlign: 'right' }}>
           {progressPercent}%
         </span>
       </header>
@@ -113,34 +111,34 @@ export default function CLevelPage() {
         {/* STEP 0: Intro */}
         {currentStep === 0 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.mascot}>🚀</div>
-            <h1 style={styles.cardTitle}>Basics of C</h1>
+            <div style={styles.mascot}>🐍</div>
+            <h1 style={styles.cardTitle}>Python Basics</h1>
             <p style={styles.description}>
-              Welcome to the foundation of modern software! <strong>C</strong> is the super-fast language that powers operating systems like Windows, Linux, and game engines.
+              Python is the most popular, readable, and versatile language in the world! Used by NASA, Google, YouTube, and AI researchers worldwide.
             </p>
             <div style={styles.infoBox}>
-              💡 <strong>Goal:</strong> Complete 3 quick interactive coding challenges to earn <strong>+30 Coins</strong> and the <strong>Master of C</strong> badge!
+              💡 <strong>Goal:</strong> Complete 3 interactive Python quests to earn <strong>+30 Coins</strong> and unlock the <strong>Snake Charmer 🐍</strong> badge!
             </div>
             <button
-              className="btn btn-primary"
+              className="btn btn-warning"
               onClick={() => {
                 setCurrentStep(1);
                 playSound('click');
               }}
-              style={{ width: '100%', marginTop: '20px' }}
+              style={{ width: '100%', marginTop: '20px', color: '#78350f', background: 'var(--warning)', borderBottom: '4px solid #d97706' }}
             >
               Start Challenge 1 →
             </button>
           </div>
         )}
 
-        {/* STEP 1: Challenge 1 - printf */}
+        {/* STEP 1: print */}
         {currentStep === 1 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 1 of 3: Output</div>
-            <h2 style={styles.cardTitle}>Print to the Console</h2>
+            <div style={styles.stepBadge}>Challenge 1 of 3: Clean Output</div>
+            <h2 style={styles.cardTitle}>Print in Python</h2>
             <p style={styles.description}>
-              In C, we tell the computer to display words using a formatted print command. Fill in the blank to print <code>&quot;Hello World!&quot;</code>
+              No semicolons, no headers! In Python, printing is as simple as it gets. Fill in the command:
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -148,12 +146,10 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>main.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>script.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-keyword">#include</span> <span className="code-string">&lt;stdio.h&gt;</span></div>
-                <div style={{ marginTop: '6px' }}><span className="code-type">int</span> <span className="code-func">main</span>() &#123;</div>
-                <div style={{ paddingLeft: '20px', display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
                   <input
                     type="text"
                     value={input1}
@@ -162,14 +158,11 @@ export default function CLevelPage() {
                     placeholder="____"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>(&quot;Hello World!\n&quot;);</span>
+                  <span style={{ color: '#fff' }}>(&quot;Hello Python World! 🐍&quot;)</span>
                 </div>
-                <div style={{ paddingLeft: '20px' }}><span className="code-keyword">return</span> 0;</div>
-                <div>&#125;</div>
               </div>
             </div>
 
-            {/* Terminal Live Output */}
             {terminalOutput && (
               <div style={styles.consolePreview}>
                 <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '0.85rem' }}>
@@ -185,23 +178,30 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge1}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#eab308',
+                color: '#422006',
+                borderBottom: '4px solid #ca8a04',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Running Python... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
 
-        {/* STEP 2: Challenge 2 - int variable */}
+        {/* STEP 2: Loops */}
         {currentStep === 2 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 2 of 3: Variables</div>
-            <h2 style={styles.cardTitle}>Store a Number</h2>
+            <div style={styles.stepBadge}>Challenge 2 of 3: Loops & Iteration</div>
+            <h2 style={styles.cardTitle}>Looping Through Spells</h2>
             <p style={styles.description}>
-              Variables are containers for values. In C, you must specify what type of data you want to store. Fill in the keyword for a whole integer!
+              We have a list of spells. What keyword starts the loop through each item?
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -209,26 +209,24 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>variables.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>loop.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-type">int</span> <span className="code-func">main</span>() &#123;</div>
-                <div style={{ paddingLeft: '20px', display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                <div>spells = [&quot;Sparkle ✨&quot;, &quot;Lightning ⚡&quot;, &quot;Shield 🛡️&quot;]</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
                   <input
                     type="text"
                     value={input2}
                     onChange={e => { setInput2(e.target.value); setErrorMsg(null); }}
-                    style={styles.codeFillInput}
-                    placeholder="type"
+                    style={{ ...styles.codeFillInput, width: '60px' }}
+                    placeholder="__"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>score = 100;</span>
+                  <span style={{ color: '#fff' }}>spell in spells:</span>
                 </div>
-                <div style={{ paddingLeft: '20px' }}>
-                  <span className="code-func">printf</span>(&quot;Score: %d\n&quot;, score);
+                <div style={{ paddingLeft: '24px' }}>
+                  <span className="code-func">print</span>(f&quot;Casting &#123;spell&#125;&quot;)
                 </div>
-                <div style={{ paddingLeft: '20px' }}><span className="code-keyword">return</span> 0;</div>
-                <div>&#125;</div>
               </div>
             </div>
 
@@ -247,23 +245,30 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge2}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#eab308',
+                color: '#422006',
+                borderBottom: '4px solid #ca8a04',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Running Python... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
 
-        {/* STEP 3: Challenge 3 - Conditionals */}
+        {/* STEP 3: Functions */}
         {currentStep === 3 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 3 of 3: Logic</div>
-            <h2 style={styles.cardTitle}>Making Decisions</h2>
+            <div style={styles.stepBadge}>Challenge 3 of 3: Defining Functions</div>
+            <h2 style={styles.cardTitle}>Define a Function</h2>
             <p style={styles.description}>
-              Computers make smart choices using conditions. What keyword tests if something is true before executing code?
+              Functions let us package code into reusable actions. What 3 letters define a function in Python?
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -271,25 +276,24 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>decision.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>magic.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-type">int</span> score = 100;</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '4px 0' }}>
                   <input
                     type="text"
                     value={input3}
                     onChange={e => { setInput3(e.target.value); setErrorMsg(null); }}
-                    style={styles.codeFillInput}
-                    placeholder="__"
+                    style={{ ...styles.codeFillInput, width: '65px' }}
+                    placeholder="___"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>(score &gt;= 50) &#123;</span>
+                  <span className="code-func">brew_potion</span>(power):
                 </div>
-                <div style={{ paddingLeft: '20px' }}>
-                  <span className="code-func">printf</span>(&quot;High score achieved!\n&quot;);
+                <div style={{ paddingLeft: '24px' }}>
+                  <span className="code-func">print</span>(f&quot;🔮 Magic potion brewed with &#123;power&#125; Power!&quot;)
                 </div>
-                <div>&#125;</div>
+                <div style={{ marginTop: '8px' }}>brew_potion(100)</div>
               </div>
             </div>
 
@@ -308,12 +312,19 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge3}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#eab308',
+                color: '#422006',
+                borderBottom: '4px solid #ca8a04',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Running Python... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
@@ -321,15 +332,15 @@ export default function CLevelPage() {
         {/* STEP 4: Victory */}
         {currentStep === 4 && (
           <div className="card animate-pop" style={styles.victoryCard}>
-            <div style={{ fontSize: '4.5rem', marginBottom: '12px' }}>🏆</div>
-            <h1 style={{ color: 'white', fontSize: '2rem', marginBottom: '8px' }}>C Level Mastered!</h1>
-            <p style={{ fontSize: '1.2rem', color: '#e0f2fe', marginBottom: '24px' }}>
-              Awesome job! You learned C syntax, variables, and logic!
+            <div style={{ fontSize: '4.5rem', marginBottom: '12px' }}>🐍</div>
+            <h1 style={{ color: 'white', fontSize: '2rem', marginBottom: '8px' }}>Python Mastered!</h1>
+            <p style={{ fontSize: '1.2rem', color: '#fef3c7', marginBottom: '24px' }}>
+              Awesome! You mastered Python print statements, list iteration, and function definitions!
             </p>
 
             <div style={styles.rewardPill}>
               <span>🪙 +30 Coins Earned</span>
-              <span>⭐ Badge: Master of C</span>
+              <span>⭐ Badge: Snake Charmer</span>
             </div>
 
             <Link
@@ -338,11 +349,11 @@ export default function CLevelPage() {
               onClick={() => playSound('click')}
               style={{
                 background: 'white',
-                color: 'var(--primary)',
+                color: '#b45309',
                 width: '100%',
                 fontWeight: 900,
                 fontSize: '1.1rem',
-                borderBottom: '4px solid #cbd5e1',
+                borderBottom: '4px solid #fde68a',
               }}
             >
               Return to Track Map 🚀
@@ -387,7 +398,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    background: 'linear-gradient(90deg, #1cb0f6, #0284c7)',
+    background: 'linear-gradient(90deg, #ffc800, #eab308)',
     transition: 'width 0.4s ease-in-out',
   },
   main: {
@@ -407,8 +418,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   stepBadge: {
     display: 'inline-block',
-    background: '#e0f2fe',
-    color: '#0369a1',
+    background: '#fef3c7',
+    color: '#92400e',
     fontWeight: 800,
     fontSize: '0.85rem',
     padding: '4px 12px',
@@ -438,8 +449,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   codeFillInput: {
     background: '#1f2937',
-    border: '2px solid #38bdf8',
-    color: '#38bdf8',
+    border: '2px solid #facc15',
+    color: '#facc15',
     padding: '4px 10px',
     borderRadius: '8px',
     width: '90px',
@@ -451,7 +462,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   consolePreview: {
     background: '#030712',
-    color: '#4ade80',
+    color: '#fef08a',
     borderRadius: '10px',
     padding: '12px 16px',
     textAlign: 'left',
@@ -470,13 +481,13 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'left',
   },
   victoryCard: {
-    background: 'linear-gradient(135deg, #1cb0f6, #0284c7)',
+    background: 'linear-gradient(135deg, #f59e0b, #d97706)',
     color: 'white',
     textAlign: 'center',
     padding: '48px 32px',
     borderRadius: '24px',
     border: 'none',
-    boxShadow: '0 20px 40px rgba(28, 176, 246, 0.35)',
+    boxShadow: '0 20px 40px rgba(245, 158, 11, 0.35)',
   },
   rewardPill: {
     background: 'rgba(255, 255, 255, 0.2)',

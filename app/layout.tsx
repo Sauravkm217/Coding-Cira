@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import AiTutor from '@/components/AiTutor';
+import Navbar from '@/components/Navbar';
+import { GamificationProvider } from '@/components/GamificationContext';
 
 export const metadata: Metadata = {
   title: 'Coding Cira — Sparks Curiosity',
@@ -15,10 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main style={{ minHeight: '100vh', paddingBottom: '80px' }}>
-          {children}
-          <AiTutor />
-        </main>
+        <GamificationProvider>
+          <Navbar />
+          <main style={{ minHeight: 'calc(100vh - 80px)', paddingBottom: '80px' }}>
+            {children}
+            <AiTutor />
+          </main>
+        </GamificationProvider>
       </body>
     </html>
   );

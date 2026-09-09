@@ -5,17 +5,15 @@ import Link from 'next/link';
 import { useGamification } from '@/components/GamificationContext';
 import Confetti from '@/components/Confetti';
 
-export default function CLevelPage() {
+export default function AiLevelPage() {
   const { updateProgress, playSound } = useGamification();
-  const [currentStep, setCurrentStep] = useState(0); 
-  // 0: Intro, 1: Challenge 1 (printf), 2: Challenge 2 (int), 3: Challenge 3 (if), 4: Victory
-  
-  // Challenge inputs
+  const [currentStep, setCurrentStep] = useState(0);
+  // 0: Intro, 1: Challenge 1 (prompts), 2: Challenge 2 (training data), 3: Challenge 3 (weights), 4: Victory
+
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
 
-  // Terminal simulated output state
   const [terminalOutput, setTerminalOutput] = useState<string | null>(null);
   const [isCompiling, setIsCompiling] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -28,16 +26,16 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input1.trim().toLowerCase() === 'printf') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nHello World!\n\n[Process exited 0 - SUCCESS]");
+      if (input1.trim().toLowerCase() === 'prompt') {
+        setTerminalOutput("$ ai_agent.infer()\n[Tokenizing instruction...]\nAI Model: 'The solar system has 8 planets orbiting the Sun!' 🌌\n\n[Inference completed in 120ms]");
         playSound('success');
         setTimeout(() => {
           setCurrentStep(2);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: In function 'main':\nerror: undefined function name. Did you mean 'printf'?");
-        setErrorMsg("Hint: The function to print formatted text in C is 'printf'.");
+        setTerminalOutput("$ ai_agent.infer()\nValidationError: Missing input key. Expected 'prompt'.");
+        setErrorMsg("Hint: The input text instruction provided to an AI model is called a 'prompt'.");
         playSound('error');
       }
     }, 600);
@@ -51,16 +49,16 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input2.trim().toLowerCase() === 'int') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nPlayer Score: 100\nCoins Collected: 50\n\n[Process exited 0 - SUCCESS]");
+      if (input2.trim().toLowerCase() === 'dataset' || input2.trim().toLowerCase() === 'data') {
+        setTerminalOutput("$ python train_model.py\nLoading 10,000 cat & dog examples...\nEpoch 1/5 - Loss: 0.42 - Accuracy: 88%\nEpoch 5/5 - Loss: 0.08 - Accuracy: 98.4%\nModel trained successfully! 🐾");
         playSound('success');
         setTimeout(() => {
           setCurrentStep(3);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: error: unknown type name. Expected whole integer type 'int'.");
-        setErrorMsg("Hint: In C, whole numbers use the 'int' data type.");
+        setTerminalOutput("$ python train_model.py\nValueError: No training dataset found. Did you mean 'dataset' or 'data'?");
+        setErrorMsg("Hint: The collection of examples used to train AI is called a 'dataset'.");
         playSound('error');
       }
     }, 600);
@@ -74,17 +72,17 @@ export default function CLevelPage() {
 
     setTimeout(() => {
       setIsCompiling(false);
-      if (input3.trim().toLowerCase() === 'if') {
-        setTerminalOutput("$ gcc main.c -o prog && ./prog\nChecking score...\n🎉 High score achieved!\n\n[Process exited 0 - SUCCESS]");
+      if (input3.trim().toLowerCase() === 'weights' || input3.trim().toLowerCase() === 'weight') {
+        setTerminalOutput("$ python evaluate.py\nOptimizing 7 Billion Neural Weights via Gradient Descent...\n⚡ Forward Pass... Loss optimized!\n🧠 Superintelligence Spark Activated!\n\n[Success: Model Ready for Deployment!]");
         playSound('fanfare');
-        updateProgress('c', 3, 3, 30);
+        updateProgress('ai', 3, 3, 30);
         setTimeout(() => {
           setCurrentStep(4);
           setTerminalOutput(null);
         }, 1400);
       } else {
-        setTerminalOutput("$ gcc main.c -o prog\nmain.c: error: syntax error before '(' token. Did you mean 'if'?");
-        setErrorMsg("Hint: Use the 'if' keyword to test whether a condition is true!");
+        setTerminalOutput("$ python evaluate.py\nRuntimeError: Unknown neural parameter. Expected 'weights'.");
+        setErrorMsg("Hint: The internal adjustable parameters in a neural network are known as 'weights'.");
         playSound('error');
       }
     }, 600);
@@ -104,7 +102,7 @@ export default function CLevelPage() {
         <div style={styles.progressBar}>
           <div style={{ ...styles.progressFill, width: `${progressPercent}%` }} />
         </div>
-        <span style={{ fontWeight: 800, color: 'var(--primary)', minWidth: '45px', textAlign: 'right' }}>
+        <span style={{ fontWeight: 800, color: '#9333ea', minWidth: '45px', textAlign: 'right' }}>
           {progressPercent}%
         </span>
       </header>
@@ -113,34 +111,41 @@ export default function CLevelPage() {
         {/* STEP 0: Intro */}
         {currentStep === 0 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.mascot}>🚀</div>
-            <h1 style={styles.cardTitle}>Basics of C</h1>
+            <div style={styles.mascot}>🧠</div>
+            <h1 style={styles.cardTitle}>Basics of AI</h1>
             <p style={styles.description}>
-              Welcome to the foundation of modern software! <strong>C</strong> is the super-fast language that powers operating systems like Windows, Linux, and game engines.
+              Discover the secrets behind Artificial Intelligence, Large Language Models (LLMs), neural networks, and how machines learn from data!
             </p>
             <div style={styles.infoBox}>
-              💡 <strong>Goal:</strong> Complete 3 quick interactive coding challenges to earn <strong>+30 Coins</strong> and the <strong>Master of C</strong> badge!
+              💡 <strong>Goal:</strong> Complete 3 interactive AI challenges to earn <strong>+30 Coins</strong> and unlock the prestigious <strong>AI Pioneer 🧠</strong> badge!
             </div>
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={() => {
                 setCurrentStep(1);
                 playSound('click');
               }}
-              style={{ width: '100%', marginTop: '20px' }}
+              style={{
+                width: '100%',
+                marginTop: '20px',
+                background: '#9333ea',
+                color: 'white',
+                borderBottom: '4px solid #7e22ce',
+                fontWeight: 800,
+              }}
             >
               Start Challenge 1 →
             </button>
           </div>
         )}
 
-        {/* STEP 1: Challenge 1 - printf */}
+        {/* STEP 1: Prompt Engineering */}
         {currentStep === 1 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 1 of 3: Output</div>
-            <h2 style={styles.cardTitle}>Print to the Console</h2>
+            <div style={styles.stepBadge}>Challenge 1 of 3: Prompts</div>
+            <h2 style={styles.cardTitle}>Talking to an AI</h2>
             <p style={styles.description}>
-              In C, we tell the computer to display words using a formatted print command. Fill in the blank to print <code>&quot;Hello World!&quot;</code>
+              When you talk to ChatGPT or Gemini, the instruction you supply to steer its response is called a:
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -148,28 +153,26 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>main.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>ai_query.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-keyword">#include</span> <span className="code-string">&lt;stdio.h&gt;</span></div>
-                <div style={{ marginTop: '6px' }}><span className="code-type">int</span> <span className="code-func">main</span>() &#123;</div>
-                <div style={{ paddingLeft: '20px', display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                <div>ai_client = GeminiClient()</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                  <span style={{ color: '#fff' }}>user_</span>
                   <input
                     type="text"
                     value={input1}
                     onChange={e => { setInput1(e.target.value); setErrorMsg(null); }}
                     style={styles.codeFillInput}
-                    placeholder="____"
+                    placeholder="_____"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>(&quot;Hello World!\n&quot;);</span>
+                  <span style={{ color: '#fff' }}>= &quot;Explain the solar system!&quot;</span>
                 </div>
-                <div style={{ paddingLeft: '20px' }}><span className="code-keyword">return</span> 0;</div>
-                <div>&#125;</div>
+                <div>response = ai_client.generate(user_prompt)</div>
               </div>
             </div>
 
-            {/* Terminal Live Output */}
             {terminalOutput && (
               <div style={styles.consolePreview}>
                 <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '0.85rem' }}>
@@ -185,23 +188,30 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge1}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#9333ea',
+                color: 'white',
+                borderBottom: '4px solid #7e22ce',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Evaluating Prompt with AI... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
 
-        {/* STEP 2: Challenge 2 - int variable */}
+        {/* STEP 2: Datasets */}
         {currentStep === 2 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 2 of 3: Variables</div>
-            <h2 style={styles.cardTitle}>Store a Number</h2>
+            <div style={styles.stepBadge}>Challenge 2 of 3: Training Data</div>
+            <h2 style={styles.cardTitle}>Teaching the Model</h2>
             <p style={styles.description}>
-              Variables are containers for values. In C, you must specify what type of data you want to store. Fill in the keyword for a whole integer!
+              Instead of writing manual rules, we feed thousands of examples to an algorithm. What do we call this collection of examples?
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -209,26 +219,23 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>variables.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>train.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-type">int</span> <span className="code-func">main</span>() &#123;</div>
-                <div style={{ paddingLeft: '20px', display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                <div>model = VisionClassifier()</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                  <span style={{ color: '#fff' }}>training_</span>
                   <input
                     type="text"
                     value={input2}
                     onChange={e => { setInput2(e.target.value); setErrorMsg(null); }}
                     style={styles.codeFillInput}
-                    placeholder="type"
+                    placeholder="____"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>score = 100;</span>
+                  <span style={{ color: '#fff' }}>= load_images(&quot;cats_vs_dogs/&quot;)</span>
                 </div>
-                <div style={{ paddingLeft: '20px' }}>
-                  <span className="code-func">printf</span>(&quot;Score: %d\n&quot;, score);
-                </div>
-                <div style={{ paddingLeft: '20px' }}><span className="code-keyword">return</span> 0;</div>
-                <div>&#125;</div>
+                <div>model.fit(training_dataset, epochs=5)</div>
               </div>
             </div>
 
@@ -247,23 +254,30 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge2}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#9333ea',
+                color: 'white',
+                borderBottom: '4px solid #7e22ce',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Training Neural Network... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
 
-        {/* STEP 3: Challenge 3 - Conditionals */}
+        {/* STEP 3: Neural Weights */}
         {currentStep === 3 && (
           <div className="card animate-pop" style={styles.card}>
-            <div style={styles.stepBadge}>Challenge 3 of 3: Logic</div>
-            <h2 style={styles.cardTitle}>Making Decisions</h2>
+            <div style={styles.stepBadge}>Challenge 3 of 3: Neural Parameters</div>
+            <h2 style={styles.cardTitle}>How Neural Networks Learn</h2>
             <p style={styles.description}>
-              Computers make smart choices using conditions. What keyword tests if something is true before executing code?
+              A neural network consists of billions of connected artificial neurons. During training, the computer tunes these connection strengths called:
             </p>
 
             <div className="terminal-window" style={{ marginBottom: '16px' }}>
@@ -271,25 +285,22 @@ export default function CLevelPage() {
                 <span className="terminal-dot terminal-dot-red" />
                 <span className="terminal-dot terminal-dot-yellow" />
                 <span className="terminal-dot terminal-dot-green" />
-                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>decision.c</span>
+                <span style={{ color: '#9ca3af', fontSize: '0.8rem', marginLeft: '8px' }}>neural_net.py</span>
               </div>
               <div className="terminal-body">
-                <div><span className="code-type">int</span> score = 100;</div>
+                <div>loss = compute_loss(predictions, targets)</div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: '8px 0' }}>
+                  <span style={{ color: '#fff' }}>model.update_</span>
                   <input
                     type="text"
                     value={input3}
                     onChange={e => { setInput3(e.target.value); setErrorMsg(null); }}
-                    style={styles.codeFillInput}
-                    placeholder="__"
+                    style={{ ...styles.codeFillInput, width: '95px' }}
+                    placeholder="______"
                     autoFocus
                   />
-                  <span style={{ color: '#fff' }}>(score &gt;= 50) &#123;</span>
+                  <span style={{ color: '#fff' }}>(learning_rate=0.01)</span>
                 </div>
-                <div style={{ paddingLeft: '20px' }}>
-                  <span className="code-func">printf</span>(&quot;High score achieved!\n&quot;);
-                </div>
-                <div>&#125;</div>
               </div>
             </div>
 
@@ -308,12 +319,19 @@ export default function CLevelPage() {
             )}
 
             <button
-              className="btn btn-primary"
+              className="btn"
               onClick={runChallenge3}
               disabled={isCompiling}
-              style={{ width: '100%', marginTop: '16px' }}
+              style={{
+                width: '100%',
+                marginTop: '16px',
+                background: '#9333ea',
+                color: 'white',
+                borderBottom: '4px solid #7e22ce',
+                fontWeight: 800,
+              }}
             >
-              {isCompiling ? 'Compiling C code... ⏳' : '▶ Run & Check Answer'}
+              {isCompiling ? 'Tuning Neural Weights... ⏳' : '▶ Run & Check Answer'}
             </button>
           </div>
         )}
@@ -321,15 +339,15 @@ export default function CLevelPage() {
         {/* STEP 4: Victory */}
         {currentStep === 4 && (
           <div className="card animate-pop" style={styles.victoryCard}>
-            <div style={{ fontSize: '4.5rem', marginBottom: '12px' }}>🏆</div>
-            <h1 style={{ color: 'white', fontSize: '2rem', marginBottom: '8px' }}>C Level Mastered!</h1>
-            <p style={{ fontSize: '1.2rem', color: '#e0f2fe', marginBottom: '24px' }}>
-              Awesome job! You learned C syntax, variables, and logic!
+            <div style={{ fontSize: '4.5rem', marginBottom: '12px' }}>🧠</div>
+            <h1 style={{ color: 'white', fontSize: '2rem', marginBottom: '8px' }}>AI Track Mastered!</h1>
+            <p style={{ fontSize: '1.2rem', color: '#f3e8ff', marginBottom: '24px' }}>
+              Spectacular! You learned prompts, datasets, and how neural weights power artificial intelligence!
             </p>
 
             <div style={styles.rewardPill}>
               <span>🪙 +30 Coins Earned</span>
-              <span>⭐ Badge: Master of C</span>
+              <span>⭐ Badge: AI Pioneer</span>
             </div>
 
             <Link
@@ -338,11 +356,11 @@ export default function CLevelPage() {
               onClick={() => playSound('click')}
               style={{
                 background: 'white',
-                color: 'var(--primary)',
+                color: '#7e22ce',
                 width: '100%',
                 fontWeight: 900,
                 fontSize: '1.1rem',
-                borderBottom: '4px solid #cbd5e1',
+                borderBottom: '4px solid #e9d5ff',
               }}
             >
               Return to Track Map 🚀
@@ -387,7 +405,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   progressFill: {
     height: '100%',
-    background: 'linear-gradient(90deg, #1cb0f6, #0284c7)',
+    background: 'linear-gradient(90deg, #c084fc, #9333ea)',
     transition: 'width 0.4s ease-in-out',
   },
   main: {
@@ -407,8 +425,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   stepBadge: {
     display: 'inline-block',
-    background: '#e0f2fe',
-    color: '#0369a1',
+    background: '#f3e8ff',
+    color: '#7e22ce',
     fontWeight: 800,
     fontSize: '0.85rem',
     padding: '4px 12px',
@@ -438,8 +456,8 @@ const styles: Record<string, React.CSSProperties> = {
   },
   codeFillInput: {
     background: '#1f2937',
-    border: '2px solid #38bdf8',
-    color: '#38bdf8',
+    border: '2px solid #c084fc',
+    color: '#c084fc',
     padding: '4px 10px',
     borderRadius: '8px',
     width: '90px',
@@ -451,7 +469,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   consolePreview: {
     background: '#030712',
-    color: '#4ade80',
+    color: '#d8b4fe',
     borderRadius: '10px',
     padding: '12px 16px',
     textAlign: 'left',
@@ -470,13 +488,13 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'left',
   },
   victoryCard: {
-    background: 'linear-gradient(135deg, #1cb0f6, #0284c7)',
+    background: 'linear-gradient(135deg, #9333ea, #6b21a8)',
     color: 'white',
     textAlign: 'center',
     padding: '48px 32px',
     borderRadius: '24px',
     border: 'none',
-    boxShadow: '0 20px 40px rgba(28, 176, 246, 0.35)',
+    boxShadow: '0 20px 40px rgba(147, 51, 234, 0.35)',
   },
   rewardPill: {
     background: 'rgba(255, 255, 255, 0.2)',
